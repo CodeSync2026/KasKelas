@@ -46,7 +46,7 @@ if (isset($_POST['btn_register'])) {
     <div class="auth-layout">
         <aside class="auth-visual">
             <a class="brand-lockup" href="login.php" aria-label="Kas Kelas">
-                <!-- <span class="brand-mark"><i data-lucide="wallet-cards"></i></span> -->
+                <span class="brand-mark"><i data-lucide="wallet-cards"></i></span>
                 <span class="brand-copy">
                     <span class="brand-title">Kas Kelas</span>
                     <span class="brand-subtitle">Akun anggota baru</span>
@@ -94,7 +94,7 @@ if (isset($_POST['btn_register'])) {
 
         <main class="auth-main">
             <section class="auth-panel" aria-label="Form daftar anggota">
-                <!-- <span class="brand-mark mb-3"><i data-lucide="user-plus"></i></span> -->
+                <span class="brand-mark mb-3"><i data-lucide="user-plus"></i></span>
                 <h1>Daftar akun baru</h1>
                 <p class="lead">Isi data anggota dengan username yang mudah diingat dan tanpa spasi.</p>
 
