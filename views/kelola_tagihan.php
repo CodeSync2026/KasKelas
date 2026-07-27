@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config/koneksi.php';
+require_once __DIR__ . '/../config/koneksi.php';
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'bendahara') {
     header("Location: login.php");

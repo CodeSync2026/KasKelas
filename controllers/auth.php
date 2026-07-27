@@ -1,7 +1,7 @@
 <?php
 // Wajib dipanggil untuk memulai sesi login
 session_start(); 
-require_once '../config/koneksi.php';
+require_once __DIR__ . '/../config/koneksi.php';
 
 // Cek apakah data dikirim melalui method POST
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
