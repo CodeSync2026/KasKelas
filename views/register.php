@@ -2,7 +2,7 @@
 session_start();
 require_once '../config/koneksi.php';
 
-if (isset($_POST['btn_register'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama = htmlspecialchars(trim($_POST['nama']));
     $username = htmlspecialchars(trim($_POST['username']));
     $password = trim($_POST['password']);

@@ -16,7 +16,7 @@ if (isset($_GET['bayar_id'])) {
     exit;
 }
 
-if (isset($_POST['btn_tambah_tagihan'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_tambah_tagihan'])) {
     $id_user_tagih = intval($_POST['id_user']);
     $bulan = htmlspecialchars(trim($_POST['bulan']));
     $minggu_ke = intval($_POST['minggu_ke']);

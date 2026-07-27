@@ -288,8 +288,10 @@ document.addEventListener("DOMContentLoaded", function () {
             button.dataset.originalText = button.innerHTML;
             button.innerHTML = button.dataset.loadingText || "Memproses...";
             button.setAttribute("aria-disabled", "true");
-            button.disabled = true;
             form.setAttribute("aria-busy", "true");
+            setTimeout(function () {
+                button.disabled = true;
+            }, 0);
         });
     });
 

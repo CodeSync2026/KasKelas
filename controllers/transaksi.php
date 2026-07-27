@@ -7,7 +7,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'bendahara') {
     exit;
 }
 
-if (isset($_POST['btn_simpan_transaksi'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal = $_POST['tanggal'];
     $id_kategori = intval($_POST['id_kategori']);
     $jumlah = floatval($_POST['jumlah']);

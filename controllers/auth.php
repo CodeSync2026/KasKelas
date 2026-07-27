@@ -3,8 +3,8 @@
 session_start(); 
 require_once '../config/koneksi.php';
 
-// Cek apakah data dikirim melalui tombol login
-if(isset($_POST['btn_login'])) {
+// Cek apakah data dikirim melalui method POST
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
