@@ -9,11 +9,9 @@ if (isset($_POST['btn_register'])) {
     $role = 'anggota';
 
     $cek_username = $koneksi->prepare("SELECT username FROM users WHERE username = ?");
-    $cek_username->bind_param("s", $username);
-    $cek_username->execute();
-    $cek_username->store_result();
+    $cek_username->execute([$username]);
 
-    if ($cek_username->num_rows > 0) {
+    if ($cek_username->fetch()) {
         echo "<script>alert('Username sudah terpakai! Silakan gunakan username lain.'); window.history.back();</script>";
         exit;
     }
@@ -21,9 +19,8 @@ if (isset($_POST['btn_register'])) {
     $password_hash = password_hash($password, PASSWORD_BCRYPT);
     $query = "INSERT INTO users (nama, username, password_hash, role) VALUES (?, ?, ?, ?)";
     $stmt = $koneksi->prepare($query);
-    $stmt->bind_param("ssss", $nama, $username, $password_hash, $role);
 
-    if ($stmt->execute()) {
+    if ($stmt->execute([$nama, $username, $password_hash, $role])) {
         echo "<script>alert('Pendaftaran berhasil! Silakan login dengan akun baru Anda.'); window.location='login.php';</script>";
         exit;
     }

@@ -15,7 +15,7 @@ $query_ringkasan = "
     FROM transactions t
     JOIN categories c ON t.id_kategori = c.id_kategori
 ";
-$row_ringkasan = $koneksi->query($query_ringkasan)->fetch_assoc();
+$row_ringkasan = $koneksi->query($query_ringkasan)->fetch();
 $total_pemasukan = (float) $row_ringkasan['total_pemasukan'];
 $total_pengeluaran = (float) $row_ringkasan['total_pengeluaran'];
 $total_saldo = $total_pemasukan - $total_pengeluaran;
@@ -27,7 +27,7 @@ $query_tagihan = "
         COALESCE(SUM(CASE WHEN status = 'lunas' THEN 1 ELSE 0 END), 0) AS total_lunas
     FROM tagihan
 ";
-$row_tagihan = $koneksi->query($query_tagihan)->fetch_assoc();
+$row_tagihan = $koneksi->query($query_tagihan)->fetch();
 $total_belum = (int) $row_tagihan['total_belum'];
 $total_lunas = (int) $row_tagihan['total_lunas'];
 
@@ -185,10 +185,10 @@ $pengeluaran_pct = round(($total_pengeluaran / $arus_total) * 100);
                                 ORDER BY t.tanggal DESC
                                 LIMIT 5
                             ";
-                            $result_history = $koneksi->query($query_history);
+                            $result_history = $koneksi->query($query_history)->fetchAll();
 
-                            if ($result_history->num_rows > 0) {
-                                while ($row = $result_history->fetch_assoc()) {
+                            if (!empty($result_history)) {
+                                foreach ($result_history as $row) {
                                     $is_pemasukan = $row['jenis'] === 'pemasukan';
                                     $tanda = $is_pemasukan ? '+' : '-';
                                     $amount_class = $is_pemasukan ? 'is-income' : 'is-expense';

@@ -36,9 +36,8 @@ if (isset($_POST['btn_simpan_transaksi'])) {
 
     $query = "INSERT INTO transactions (id_user, id_kategori, jumlah, tanggal, keterangan, bukti_foto) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $koneksi->prepare($query);
-    $stmt->bind_param("iidsss", $id_user, $id_kategori, $jumlah, $tanggal, $keterangan, $nama_file_baru);
     
-    if ($stmt->execute()) {
+    if ($stmt->execute([$id_user, $id_kategori, $jumlah, $tanggal, $keterangan, $nama_file_baru])) {
         echo "<script>alert('Transaksi berhasil dicatat!'); window.location='../views/dashboard_bendahara.php';</script>";
     } else {
         echo "<script>alert('Gagal mencatat transaksi.'); window.history.back();</script>";

@@ -16,7 +16,7 @@ $query_saldo = "
     FROM transactions t
     JOIN categories c ON t.id_kategori = c.id_kategori
 ";
-$row_saldo = $koneksi->query($query_saldo)->fetch_assoc();
+$row_saldo = $koneksi->query($query_saldo)->fetch();
 $total_saldo = (float) $row_saldo['saldo'];
 
 $query_pengeluaran = "
@@ -25,7 +25,7 @@ $query_pengeluaran = "
     JOIN categories c ON t.id_kategori = c.id_kategori
     WHERE c.jenis = 'pengeluaran'
 ";
-$row_pengeluaran = $koneksi->query($query_pengeluaran)->fetch_assoc();
+$row_pengeluaran = $koneksi->query($query_pengeluaran)->fetch();
 $total_pengeluaran = (float) $row_pengeluaran['total_pengeluaran'];
 $jumlah_pengeluaran = (int) $row_pengeluaran['jumlah_pengeluaran'];
 
@@ -36,9 +36,8 @@ $stmt_tagihan_summary = $koneksi->prepare("
     FROM tagihan
     WHERE id_user = ?
 ");
-$stmt_tagihan_summary->bind_param("i", $id_user_login);
-$stmt_tagihan_summary->execute();
-$row_tagihan_summary = $stmt_tagihan_summary->get_result()->fetch_assoc();
+$stmt_tagihan_summary->execute([$id_user_login]);
+$row_tagihan_summary = $stmt_tagihan_summary->fetch();
 $total_belum = (int) $row_tagihan_summary['total_belum'];
 $total_lunas = (int) $row_tagihan_summary['total_lunas'];
 ?>
@@ -165,10 +164,10 @@ $total_lunas = (int) $row_tagihan_summary['total_lunas'];
                                 WHERE c.jenis = 'pengeluaran'
                                 ORDER BY t.tanggal DESC
                             ";
-                            $result = $koneksi->query($query_history);
+                            $result = $koneksi->query($query_history)->fetchAll();
 
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
+                            if (!empty($result)) {
+                                foreach ($result as $row) {
                                     echo "<tr>";
                                     echo "<td>" . date('d M Y', strtotime($row['tanggal'])) . "</td>";
                                     echo "<td>" . htmlspecialchars($row['keterangan']) . "</td>";
@@ -216,12 +215,11 @@ $total_lunas = (int) $row_tagihan_summary['total_lunas'];
                         <tbody>
                             <?php
                             $stmt_tagihan = $koneksi->prepare("SELECT bulan, minggu_ke, status FROM tagihan WHERE id_user = ? ORDER BY bulan DESC, minggu_ke ASC");
-                            $stmt_tagihan->bind_param("i", $id_user_login);
-                            $stmt_tagihan->execute();
-                            $result_tagihan = $stmt_tagihan->get_result();
+                            $stmt_tagihan->execute([$id_user_login]);
+                            $rows_tagihan = $stmt_tagihan->fetchAll();
 
-                            if ($result_tagihan->num_rows > 0) {
-                                while ($row = $result_tagihan->fetch_assoc()) {
+                            if (!empty($rows_tagihan)) {
+                                foreach ($rows_tagihan as $row) {
                                     $status_label = $row['status'] === 'lunas' ? 'Lunas' : 'Menunggak';
                                     $status_class = $row['status'] === 'lunas' ? 'bg-success' : 'bg-danger';
                                     echo "<tr>";

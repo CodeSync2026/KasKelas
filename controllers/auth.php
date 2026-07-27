@@ -11,12 +11,10 @@ if(isset($_POST['btn_login'])) {
     // Cari user di database berdasarkan username (Gunakan Prepared Statement untuk anti-hacker)
     $query = "SELECT id_user, nama, password_hash, role FROM users WHERE username = ?";
     $stmt = $koneksi->prepare($query);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $stmt->execute([$username]);
 
     // Jika username ditemukan di database
-    if($row = $result->fetch_assoc()) {
+    if($row = $stmt->fetch()) {
         
         // Cocokkan password yang diketik dengan password acak (hash) di database
         if(password_verify($password, $row['password_hash'])) {

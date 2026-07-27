@@ -65,7 +65,7 @@ $result_kategori = $koneksi->query($query_kategori);
                         <label class="form-label" for="id_kategori">Kategori</label>
                         <select id="id_kategori" name="id_kategori" class="form-select" required>
                             <option value="">Pilih kategori transaksi</option>
-                            <?php while ($kat = $result_kategori->fetch_assoc()) : ?>
+                            <?php while ($kat = $result_kategori->fetch()) : ?>
                                 <option value="<?= (int) $kat['id_kategori'] ?>">
                                     <?= htmlspecialchars($kat['nama_kategori']) ?> (<?= htmlspecialchars(strtoupper($kat['jenis'])) ?>)
                                 </option>

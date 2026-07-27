@@ -1,21 +1,19 @@
 <?php
 $host = "localhost";
-$username = "root"; // default username bawaan XAMPP
-$password = ""; // default password XAMPP biasanya kosong
+$port = "5432";
+$username = "postgres"; // default username PostgreSQL
+$password = "postgres"; // default password PostgreSQL
 $database = "db_kas_kelas"; // nama db
 
-// mengaktifkan mode exception untuk mysqli
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
 try {
-    $koneksi = new mysqli($host, $username, $password, $database);
-    $koneksi->set_charset("utf8mb4");
-    
-    // echo "Koneksi ke database db_kas_kelas berhasil!";
-    
-} catch (mysqli_sql_exception $e) {
-    // menangkap error tanpa membocorkan struktur path folder di browser
+    $dsn = "pgsql:host={$host};port={$port};dbname={$database}";
+    $koneksi = new PDO($dsn, $username, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false
+    ]);
+} catch (PDOException $e) {
     error_log($e->getMessage());
-    exit("Sistem gagal terhubung ke database. Pastikan nama database sudah benar.");
+    exit("Sistem gagal terhubung ke database PostgreSQL. Pastikan layanan PostgreSQL berjalan dan nama database sudah benar.");
 }
 ?>

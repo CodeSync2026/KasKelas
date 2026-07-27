@@ -10,8 +10,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'bendahara') {
 if (isset($_GET['bayar_id'])) {
     $id_tagihan = intval($_GET['bayar_id']);
     $stmt_update = $koneksi->prepare("UPDATE tagihan SET status = 'lunas' WHERE id_tagihan = ?");
-    $stmt_update->bind_param("i", $id_tagihan);
-    $stmt_update->execute();
+    $stmt_update->execute([$id_tagihan]);
 
     header("Location: kelola_tagihan.php");
     exit;
@@ -24,9 +23,8 @@ if (isset($_POST['btn_tambah_tagihan'])) {
 
     $query_insert = "INSERT INTO tagihan (id_user, bulan, minggu_ke, status) VALUES (?, ?, ?, 'belum')";
     $stmt = $koneksi->prepare($query_insert);
-    $stmt->bind_param("isi", $id_user_tagih, $bulan, $minggu_ke);
 
-    if ($stmt->execute()) {
+    if ($stmt->execute([$id_user_tagih, $bulan, $minggu_ke])) {
         echo "<script>alert('Tagihan berhasil dibuat!'); window.location='kelola_tagihan.php';</script>";
         exit;
     }
@@ -38,7 +36,7 @@ if (isset($_POST['btn_tambah_tagihan'])) {
 $query_siswa = "SELECT id_user, nama FROM users WHERE role = 'anggota' ORDER BY nama ASC";
 $result_siswa = $koneksi->query($query_siswa);
 
-$row_anggota = $koneksi->query("SELECT COUNT(*) AS total_anggota FROM users WHERE role = 'anggota'")->fetch_assoc();
+$row_anggota = $koneksi->query("SELECT COUNT(*) AS total_anggota FROM users WHERE role = 'anggota'")->fetch();
 $total_anggota = (int) $row_anggota['total_anggota'];
 
 $row_status = $koneksi->query("
@@ -47,7 +45,7 @@ $row_status = $koneksi->query("
         COALESCE(SUM(CASE WHEN status = 'belum' THEN 1 ELSE 0 END), 0) AS total_belum,
         COALESCE(SUM(CASE WHEN status = 'lunas' THEN 1 ELSE 0 END), 0) AS total_lunas
     FROM tagihan
-")->fetch_assoc();
+")->fetch();
 $total_tagihan = (int) $row_status['total_tagihan'];
 $total_belum = (int) $row_status['total_belum'];
 $total_lunas = (int) $row_status['total_lunas'];
@@ -133,7 +131,7 @@ $total_lunas = (int) $row_status['total_lunas'];
                         <label class="form-label" for="id_user">Pilih Anggota</label>
                         <select id="id_user" name="id_user" class="form-select" required>
                             <option value="">Pilih anggota</option>
-                            <?php while ($siswa = $result_siswa->fetch_assoc()) : ?>
+                            <?php while ($siswa = $result_siswa->fetch()) : ?>
                                 <option value="<?= (int) $siswa['id_user'] ?>"><?= htmlspecialchars($siswa['nama']) ?></option>
                             <?php endwhile; ?>
                         </select>
@@ -187,10 +185,10 @@ $total_lunas = (int) $row_status['total_lunas'];
                             JOIN users u ON t.id_user = u.id_user
                             ORDER BY t.bulan DESC, t.minggu_ke ASC, u.nama ASC
                         ";
-                        $result_tagihan = $koneksi->query($query_tagihan);
+                        $result_tagihan = $koneksi->query($query_tagihan)->fetchAll();
 
-                        if ($result_tagihan->num_rows > 0) {
-                            while ($row = $result_tagihan->fetch_assoc()) {
+                        if (!empty($result_tagihan)) {
+                            foreach ($result_tagihan as $row) {
                                 echo "<tr>";
                                 echo "<td>" . htmlspecialchars($row['nama']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['bulan']) . "</td>";

@@ -30,9 +30,8 @@ $stmt_summary = $koneksi->prepare("
     JOIN categories c ON t.id_kategori = c.id_kategori
     WHERE t.tanggal BETWEEN ? AND ?
 ");
-$stmt_summary->bind_param("ss", $tanggal_awal, $tanggal_akhir);
-$stmt_summary->execute();
-$row_summary = $stmt_summary->get_result()->fetch_assoc();
+$stmt_summary->execute([$tanggal_awal, $tanggal_akhir]);
+$row_summary = $stmt_summary->fetch();
 $total_pemasukan = (float) $row_summary['total_pemasukan'];
 $total_pengeluaran = (float) $row_summary['total_pengeluaran'];
 $saldo_periode = $total_pemasukan - $total_pengeluaran;
@@ -46,9 +45,8 @@ $stmt_transaksi = $koneksi->prepare("
     WHERE t.tanggal BETWEEN ? AND ?
     ORDER BY t.tanggal ASC, c.jenis ASC
 ");
-$stmt_transaksi->bind_param("ss", $tanggal_awal, $tanggal_akhir);
-$stmt_transaksi->execute();
-$result_transaksi = $stmt_transaksi->get_result();
+$stmt_transaksi->execute([$tanggal_awal, $tanggal_akhir]);
+$rows_transaksi = $stmt_transaksi->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -170,8 +168,8 @@ $result_transaksi = $stmt_transaksi->get_result();
                     </thead>
                     <tbody>
                         <?php
-                        if ($result_transaksi->num_rows > 0) {
-                            while ($row = $result_transaksi->fetch_assoc()) {
+                        if (!empty($rows_transaksi)) {
+                            foreach ($rows_transaksi as $row) {
                                 $is_pemasukan = $row['jenis'] === 'pemasukan';
                                 $tanda = $is_pemasukan ? '+' : '-';
                                 $amount_class = $is_pemasukan ? 'is-income' : 'is-expense';
