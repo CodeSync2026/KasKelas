@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama = htmlspecialchars(trim($_POST['nama']));
     $username = htmlspecialchars(trim($_POST['username']));
     $password = trim($_POST['password']);
-    $role = 'anggota';
+    $role = isset($_POST['role']) && in_array($_POST['role'], ['bendahara', 'anggota']) ? $_POST['role'] : 'anggota';
 
     $cek_username = $koneksi->prepare("SELECT username FROM users WHERE username = ?");
     $cek_username->execute([$username]);
@@ -105,6 +105,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="form-label" for="username">Username</label>
                         <input type="text" id="username" name="username" class="form-control" required autocomplete="username" placeholder="Contoh: budi_sarpras">
                         <span class="field-hint">Gunakan huruf kecil tanpa spasi agar mudah dipakai login.</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="role">Role / Jabatan</label>
+                        <select id="role" name="role" class="form-select" required>
+                            <option value="anggota" selected>Anggota (Siswa)</option>
+                            <option value="bendahara">Bendahara (Pengelola Kas)</option>
+                        </select>
+                        <span class="field-hint">Pilih Bendahara jika Anda pengelola kas kelas.</span>
                     </div>
 
                     <div class="mb-4">

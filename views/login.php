@@ -69,6 +69,14 @@
                 <h1>Masuk ke kas kelas</h1>
                 <p class="lead">Gunakan akun bendahara atau anggota untuk membuka dashboard yang sesuai.</p>
 
+                <div class="alert alert-info d-flex align-items-start gap-2 mb-4" style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; color: var(--text-color);">
+                    <i data-lucide="info" class="mt-1 flex-shrink-0" style="color: var(--primary-color);"></i>
+                    <div style="font-size: 0.875rem;">
+                        <strong>Akun Bendahara Bawaan:</strong><br>
+                        Username: <code>admin_bendahara</code> | Password: <code>admin123</code>
+                    </div>
+                </div>
+
                 <form action="../controllers/auth.php" method="POST" data-loading>
                     <div class="mb-3">
                         <label class="form-label" for="username">Username</label>

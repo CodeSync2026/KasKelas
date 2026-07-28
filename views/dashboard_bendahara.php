@@ -62,6 +62,7 @@ $pengeluaran_pct = round(($total_pengeluaran / $arus_total) * 100);
 
             <div class="nav-links" id="bendaharaNav">
                 <span class="nav-user"><i data-lucide="user-round"></i><?= htmlspecialchars($_SESSION['nama']) ?></span>
+                <a href="kelola_pengguna.php" class="btn btn-soft"><i data-lucide="users"></i>Pengguna</a>
                 <a href="tambah_transaksi.php" class="btn btn-soft"><i data-lucide="plus"></i>Transaksi</a>
                 <a href="laporan.php" class="btn btn-soft"><i data-lucide="printer"></i>Laporan</a>
                 <a href="../controllers/logout.php" class="btn btn-secondary"><i data-lucide="log-out"></i>Keluar</a>
@@ -220,6 +221,13 @@ $pengeluaran_pct = round(($total_pengeluaran / $arus_total) * 100);
                     </div>
 
                     <div class="action-grid action-list">
+                        <a href="kelola_pengguna.php" class="action-tile">
+                            <span class="action-icon"><i data-lucide="users"></i></span>
+                            <span>
+                                <span class="action-title d-block">Kelola Pengguna</span>
+                                <span class="action-copy d-block">Kelola role & akun Bendahara / Anggota.</span>
+                            </span>
+                        </a>
                         <a href="tambah_transaksi.php" class="action-tile">
                             <span class="action-icon"><i data-lucide="receipt-text"></i></span>
                             <span>

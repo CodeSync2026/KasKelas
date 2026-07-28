@@ -78,6 +78,7 @@ $total_lunas = (int) $row_status['total_lunas'];
             <div class="nav-links" id="tagihanNav">
                 <span class="nav-user"><i data-lucide="user-round"></i><?= htmlspecialchars($_SESSION['nama']) ?></span>
                 <a href="dashboard_bendahara.php" class="btn btn-soft"><i data-lucide="layout-dashboard"></i>Dashboard</a>
+                <a href="kelola_pengguna.php" class="btn btn-soft"><i data-lucide="users"></i>Pengguna</a>
                 <a href="laporan.php" class="btn btn-soft"><i data-lucide="printer"></i>Laporan</a>
                 <a href="../controllers/logout.php" class="btn btn-secondary"><i data-lucide="log-out"></i>Keluar</a>
             </div>
